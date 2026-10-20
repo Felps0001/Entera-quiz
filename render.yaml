@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: entera-api
+    runtime: node
+    plan: free
+    branch: main
+    rootDir: api
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: entera
+      # Atualize para a URL do Cloudflare Pages depois da publicação.
+      - key: FRONTEND_ORIGINS
+        value: http://localhost:5173
+      - key: TRUST_PROXY
+        value: "1"
