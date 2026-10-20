@@ -1,0 +1,15 @@
+node_modules/
+desktop/bin/
+desktop/obj/
+desktop/wwwroot/
+dist/
+tmp/
+.env
+.env.*
+!.env.example
+inscricao/dist/
+output/
+.vs/
+*.user
+*.suo
+*.log

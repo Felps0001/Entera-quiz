@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createApp } from '../src/app.js';
+const valid = { nome: 'Pessoa de Teste', crm: '001234', celular: '(11) 99999-1234', estado: 'SP', especialidade: 'Dermatologia' };
+test('inscrições: validação, persistência, duplicidade, CORS e falha do banco', async t => {
+  const saved = [];
+  let fail = false;
+  const collection = { db: { command: async () => ({ ok: 1 }) }, insertOne: async data => {
+    if (fail) throw new Error('offline');
+    if (saved.some(s => s.crm === data.crm && s.estado === data.estado)) throw Object.assign(new Error(), { code: 11000 });
+    saved.push(data);
+  } };
+  const server = createApp({ collection, origins: ['http://localhost:5173'] }).listen(0, '127.0.0.1');
+  await new Promise(r => server.once('listening', r));
+  t.after(() => new Promise(r => server.close(r)));
+  const url = `http://127.0.0.1:${server.address().port}`;
+  const post = (data, origin = 'http://localhost:5173') => fetch(`${url}/api/inscricoes`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origin }, body: JSON.stringify(data) });
+  assert.equal((await post({ ...valid, celular: '123' })).status, 400);
+  assert.equal(saved.length, 0);
+  assert.equal((await post(valid, 'https://untrusted.example')).status, 403);
+  assert.equal((await post(valid)).status, 201);
+  assert.equal(saved[0].crm, '1234');
+  assert.equal(saved[0].celular, '11999991234');
+  assert.ok(saved[0].createdAt instanceof Date);
+  assert.equal((await post({ ...valid, crm: '1234' })).status, 409);
+  assert.equal((await post({ ...valid, estado: 'RJ' })).status, 201);
+  assert.equal((await post({ ...valid, nome: { $ne: '' } })).status, 400);
+  fail = true;
+  assert.equal((await post({ ...valid, crm: '9876' })).status, 503);
+  assert.equal((await fetch(`${url}/health`)).status, 200);
+});
