@@ -29,6 +29,9 @@ public sealed class QuizWindow : Form {
    browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
    browser.CoreWebView2.NavigationStarting += (_,e) => { if(!e.Uri.StartsWith("https://quiz.entera.local/",StringComparison.OrdinalIgnoreCase)) e.Cancel=true; };
    browser.CoreWebView2.NewWindowRequested += (_,e) => e.Handled=true;
+   browser.CoreWebView2.WebMessageReceived += (_,e) => {
+    if (e.Source == "https://quiz.entera.local/index.html" && e.WebMessageAsJson == "\"close-app\"") Close();
+   };
    browser.Source = new Uri("https://quiz.entera.local/index.html");
   } catch(Exception ex) { MessageBox.Show("Não foi possível iniciar o quiz. Verifique o runtime WebView2.\n\n"+ex.Message,"Entera Quiz"); Close(); }
  }

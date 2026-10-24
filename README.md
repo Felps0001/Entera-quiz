@@ -16,7 +16,7 @@ Abra http://localhost:3000. Para acesso na mesma rede, use o IP do computador e 
 
 ## Conteúdo
 
-Edite `public/questions.js`. A propriedade `correct` é o índice da resposta correta, começando em zero. A sequência de questões é fixa; as alternativas são embaralhadas a cada partida. A questão 5 considera “Diferentes camadas e necessidades” correta, pendente de confirmação editorial.
+Edite `public/questions.js`. A propriedade `correct` é o índice da resposta correta, começando em zero. A cada partida são sorteadas três das seis questões, sem repetição; as alternativas também são embaralhadas. A questão 5 considera “Diferentes camadas e necessidades” correta, pendente de confirmação editorial.
 
 O resultado fica apenas em memória e é apagado ao reiniciar. Não há cadastro, coleta de dados ou integração externa. As fontes oficiais ANO/Neuzeit não foram fornecidas; esta prévia usa Arial. Logo e textura foram extraídos do PDF fornecido; a paleta segue a página 40.
 
@@ -40,3 +40,5 @@ Documentação: https://learn.microsoft.com/en-us/microsoft-edge/webview2/concep
 Download: https://developer.microsoft.com/en-us/microsoft-edge/webview2/
 
 A pasta fornecida deve conter `msedgewebview2.exe`. O runtime não está incluído no repositório. Os dados temporários do navegador ficam em `%LOCALAPPDATA%\EnteraQuiz\WebView2`. O aplicativo carrega os arquivos locais por um host virtual, sem iniciar servidor Node.
+
+Para fechar o executável por toque: mantenha pressionado o canto inferior direito da janela por 3 segundos. A área invisível mede 80 × 80 pixels e está disponível em todas as telas do aplicativo Windows. Soltar ou arrastar para fora cancela o fechamento.

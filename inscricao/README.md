@@ -2,6 +2,8 @@
 
 Frontend React com Vite. O quiz existente continua em `../public`.
 
+Estado atual: o formulário foi removido da página e substituído pela mensagem “Inscrições finalizadas!”. A página não envia novos cadastros. A API permanece inalterada; as instruções de formulário abaixo documentam a versão anterior.
+
 ## Desenvolvimento
 
 Requer Node.js 22+. Nesta pasta:

@@ -9,6 +9,7 @@ tmp/
 !.env.example
 inscricao/dist/
 output/
+api/exports/
 .vs/
 *.user
 *.suo

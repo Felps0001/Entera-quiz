@@ -16,7 +16,25 @@ Configure `MONGODB_URI` com um MongoDB local ou Atlas. O servidor só inicia ap�
 
 `npm test` verifica o contrato HTTP com persistência substituída em memória: validação, normalização, duplicidade, CORS e indisponibilidade. Esses testes não substituem a verificação com MongoDB real.
 
-## Rotas
+## Exportar inscritos para CSV
+
+Com `MONGODB_URI` e `MONGODB_DB` configurados no arquivo `api/.env`, execute na pasta `api`:
+
+```powershell
+npm run export:inscritos
+```
+
+O comando consulta a coleção `inscricoes` e cria `exports/inscritos-<data>.csv`, mostrando o caminho completo e a quantidade exportada. Não altera os registros. A pasta `api/exports/` é ignorada pelo Git.
+
+Para escolher o destino (relativo à pasta atual ou absoluto):
+
+```powershell
+npm run export:inscritos -- ./exports/inscritos.csv
+```
+
+Arquivos existentes não são sobrescritos. O CSV usa UTF-8 com BOM, separador `;` e datas em UTC; contém ID, nome, CRM, celular, estado, especialidade e data de inscrição. Textos que podem ser interpretados como fórmulas recebem um apóstrofo de proteção. Ao importar no Excel, selecione CRM e celular como texto para preservar os dígitos. Guarde o arquivo em local privado, pois contém dados pessoais.
+
+## Rotas HTTP
 
 - `GET /health`: disponibilidade da API e conexão com banco.
 - `POST /api/inscricoes`: recebe `nome`, `crm`, `celular`, `estado` e `especialidade`.
